@@ -6,6 +6,22 @@ const GAMEBOARD = (function() {
    const Player1 = "X";
    const player2 = "O";
 
+   // let currentPlayer = "X";
+
+   let startGame = function() {
+      if(gameOver) {
+         console.log("game over")
+         return;
+      } else {
+         firstPlayerMove();
+         secondPlayerMove();
+         console.log(gameBoard);
+         startGame();
+         
+      }
+      
+   }
+
    let isBoardFull = function() {
       if(gameBoard.flat().includes(" ")) {
          return false;
@@ -40,12 +56,57 @@ const GAMEBOARD = (function() {
       return false;
    }
 
+   let secondPlayerMove = function() {
+      let chooseRow = Number(prompt("Enter your row number "));
+      let chooseCol = Number(prompt("Enter your Column number "));
+      if(isValidMove(chooseRow, chooseCol)) {
+         gameBoard[chooseRow][chooseCol] = player2;
+      } else {
+         secondPlayerMove();
+      }
+   }
+
+   let firstPlayerMove = function() {
+      let chooseRow = Math.floor(Math.random * 3);
+      let chooseCol = Math.floor(Math.random * 3);
+      if(isValidMove(chooseRow, chooseCol)) {
+         gameBoard[chooseRow][chooseCol] = Player1;
+      } else {
+         firstPlayerMove();
+      }
+   }
+
+   function isValidMove(row, col) {
+      if(isBoardFull() || checkWinner()) {
+         alert("Game is over already");
+         return false;
+      } else if(col > 3 || row > 3 || col < 0 || row < 0 || Number.isNaN(row) || Number.isNaN(col)) {
+         alert("Enter a valid box");
+         return false;
+      }else if(gameBoard[row][col] == " ") {
+         return true;
+      }
+   }
+
+   let gameOver = function() {
+      if(isBoardFull() && !checkWinner()) {
+         console.log("It's a tie");
+         return true;
+      } else if((isBoardFull && checkWinner()) || (!isBoardFull && checkWinner())) {
+         console.log(`Congratulations, ${checkWinner()} won the game `);
+         return true;
+      } 
+      return false;
+   }
+
 
    return {
       isBoardFull,
-      checkWinner
+      checkWinner,
+      secondPlayerMove,
+      startGame,
    }
 })();
 
 // console.log(GAMEBOARD.isBoardFull());
-console.log(GAMEBOARD.checkWinner());
+GAMEBOARD.startGame();
