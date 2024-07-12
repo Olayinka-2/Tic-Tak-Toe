@@ -7,23 +7,33 @@ const GAMEBOARD = (function() {
    const player2 = "O";
 
    let currentPlayer = "X";
+   let isCancelled = false;
 
       
       let startGame = function() {
          let isOver = false;
          while(!isOver) {
-            if(gameOver()) {
+            if(gameOver() || isCancelled) {
                isOver = true;
+               break;
             } else {
                if (currentPlayer === player1) {
                   firstPlayerMove();
                } else {
                   secondPlayerMove();
                }
+            }
+            if(isCancelled) {
+               console.log("Game is cancelled");
+               break;
+            }
             console.log(gameBoard.map(row => row.join(' | ')).join('\n---------\n'));
             currentPlayer = currentPlayer === player1 ? player2 : player1;
-            }
          }
+      }
+
+      if(isCancelled) {
+         console.log("Game is cancelled");
       }
 
 
@@ -65,11 +75,15 @@ const GAMEBOARD = (function() {
       return false;
    }
 
-   // console.log(checkWinner());
-
    let secondPlayerMove = function() {
+      
       let chooseRow = Number(prompt("Enter your row number "));
       let chooseCol = Number(prompt("Enter your Column number "));
+
+      if(chooseCol === -1 || chooseRow === -1 || chooseRow === null || chooseCol === null) {
+         isCancelled = true;
+         return;
+      }
       if(isValidMove(chooseRow, chooseCol)) {
          gameBoard[chooseRow][chooseCol] = player2;
          return;
@@ -95,7 +109,8 @@ const GAMEBOARD = (function() {
       if((col > 2 || row > 2) || (col < 0 || row < 0) || Number.isNaN(row) || Number.isNaN(col)) {
          alert("Enter a valid box");
          return false;
-      }else if(gameBoard[row][col] == "d") {
+      } 
+      else if(gameBoard[row][col] == "d") {
          return true;
       }
    }
@@ -105,7 +120,7 @@ const GAMEBOARD = (function() {
       let boardFull = isBoardFull();
 
       if(winner) {
-         winner = player1 === player1 ? "player1" : "player2";
+         winner = "X" ? "player1" : "player2";
          console.log(`Congratulations, ${winner} won the game `);
          console.log("Game over");
          return true;
@@ -124,4 +139,6 @@ const GAMEBOARD = (function() {
 })();
 
 GAMEBOARD.startGame();
+
+
 
