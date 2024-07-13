@@ -116,6 +116,7 @@ body {
    border: none;
    outline: none;
    border-radius: 2rem;
+   border: 2px solid #FFF;
 }
 
 #closeDialog:hover {

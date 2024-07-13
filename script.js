@@ -36,7 +36,9 @@ const DomElements = (function() {
                Player = "X";
 
                if (!GAMEBOARD.gameOver()) {
-                  GAMEBOARD.firstPlayerMove();
+                  setTimeout(() => {
+                     GAMEBOARD.firstPlayerMove()}, "1000")
+                  
                }
             }
             
