@@ -1,5 +1,9 @@
    const DomElements = (function() {
       const mainContainer = document.querySelector(".main-container");
+      
+      const resetGameButton = document.querySelector(".Reset");
+
+
       let Player = "X";
       
 
@@ -21,7 +25,8 @@
 
     
             if (!GAMEBOARD.isCancelled && !GAMEBOARD.gameOver()) {
-               Player = "O";
+               if(GAMEBOARD.secondPlayerMove(row, col)) {
+                  Player = "O";
                   GAMEBOARD.secondPlayerMove(row, col);
                   updateDom(target);
                   Player = "X";
@@ -29,10 +34,27 @@
                   if (!GAMEBOARD.gameOver()) {
                      GAMEBOARD.firstPlayerMove();
                   }
+               }
+               
             }
          
       }
 
+      function resetGames() {
+         if(GAMEBOARD.resetGame()) {
+            // Clear all cells
+            const cells = document.querySelectorAll('.cell img');
+            cells.forEach(cell => cell.removeAttribute('src'));
+
+            // Reset player display
+            const playerParagaph = document.querySelector(".player");
+            playerParagaph.textContent = '';
+            playerParagaph.style.color = 'black';
+         }
+      }
+
+      resetGameButton.addEventListener('click', resetGames);
+    
 
       // Check if mainContainer exists before adding event listener
       if (mainContainer) {
@@ -48,7 +70,7 @@
 
 
    const GAMEBOARD = (function() {
-      const gameBoard = [["d", "d", "d"],
+      let gameBoard = [["d", "d", "d"],
                         ["d", "d", "d"],
                         ["d", "d", "d"]];
 
@@ -58,12 +80,22 @@
       let currentPlayer = player1;
       let isCancelled = false;
 
-      function startGame() {
-         console.log("Game Started");
+      let playerParagaph = document.querySelector(".player");
 
+      function startGame() {
+         // console.log("Game Started");
+
+         // Reset the game board
+         gameBoard = [["d", "d", "d"],
+                     ["d", "d", "d"],
+                     ["d", "d", "d"]];
+         isCancelled = false;
+         currentPlayer = player1;
+         
          // First player (computer) starts the game
          firstPlayerMove();
       }
+
 
       function isBoardFull() {
          return !gameBoard.flat().includes("d");
@@ -100,7 +132,9 @@
          if (isValidMove(row, col)) {
             gameBoard[row][col] = player2;
             currentPlayer = "X"; // Switch to player 1 (computer) after move
-            console.log("Second player moved");
+            playerParagaph.style.color = "gold";
+            playerParagaph.textContent = "Second Player move";
+            
 
             if (checkWinner()) {
                   console.log("Player 2 wins!");
@@ -108,9 +142,9 @@
             } else if (isBoardFull()) {
                   console.log("It's a tie!");
                   isCancelled = true;
-            }
+            } return true;
          } else {
-            console.log("Invalid move for second player, try again.");
+            return false;
          }
       }
 
@@ -125,7 +159,9 @@
 
          gameBoard[chooseRow][chooseCol] = player1;
          currentPlayer = "O"; // Switch to player 2 after move
-         console.log("First player moved");
+         playerParagaph.style.color = "white";
+         playerParagaph.textContent = "First player moved";
+         // console.log("First player moved");
 
          // Update the corresponding cell in the DOM
          let target = document.querySelector(`.cell[data-row="${chooseRow + 1}"][data-col="${chooseCol + 1}"]`);
@@ -152,14 +188,25 @@
          return checkWinner() || isBoardFull();
       }
 
+      function resetGame() {
+         gameBoard = [["d", "d", "d"],
+                     ["d", "d", "d"],
+                     ["d", "d", "d"]];
+         isCancelled = false;
+         return true;
+      }
+
       return {
          startGame,
          secondPlayerMove,
          firstPlayerMove,
          isCancelled,
          currentPlayer,
-         gameOver
+         gameOver,
+         resetGame
       };
    })();
-
+   const startGameButton = document.querySelector(".start");
    document.addEventListener("DOMContentLoaded", GAMEBOARD.startGame);
+   startGameButton.addEventListener('click', GAMEBOARD.startGame);
+

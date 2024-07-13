@@ -4,14 +4,17 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>TicTacToe</title>
+   <link rel="stylesheet" href="./style.css">
+   <script src="./script.js" defer></script> 
 </head>
-<link rel="stylesheet" href="./style.css">
-<script src="./script.js" defer></script>
 <body>
    
    <div class="game">
       <div class="container">
-         <h2>Game Started</h2>
+         <div class="heading">
+            <h2>Game Started</h2>
+            <p class="player">First Player moved</p>
+         </div>
          <div class="main-container">
             <div class="cell" data-row="1" data-col="1"><img src="" alt=""></div>
             <div class="cell" data-row="1" data-col="2"><img src="" alt=""></div>
@@ -22,6 +25,10 @@
             <div class="cell" data-row="3" data-col="1"><img src="" alt=""></div>
             <div class="cell" data-row="3" data-col="2"><img src="" alt=""></div>
             <div class="cell" data-row="3" data-col="3"><img src="" alt=""></div>
+         </div>
+         <div class="buttons">
+            <button class="start">Start Game</button>
+            <button class="Reset">Reset Game</button>
          </div>
       </div>
    </div>
