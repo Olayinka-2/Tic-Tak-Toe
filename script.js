@@ -1,12 +1,13 @@
    const DomElements = (function() {
       const mainContainer = document.querySelector(".main-container");
+      let Player = "X";
+      
 
       function updateDom(target) {
          if (!target) return; // Ensure target element exists
 
-         let currentPlayer = GAMEBOARD.currentPlayer;
          // Update the DOM based on the game state
-         const imgSrc = currentPlayer === "X" ? "./img/close.svg" : "./img/circle.svg";
+         const imgSrc = Player === "X" ? "./img/close.svg" : "./img/circle.svg";
          target.querySelector("img").setAttribute("src", imgSrc);
       }
 
@@ -18,17 +19,20 @@
          let row = parseInt(target.dataset.row) - 1; // Adjust for zero-based index
          let col = parseInt(target.dataset.col) - 1; // Adjust for zero-based index
 
-         if (!isNaN(row) && !isNaN(col)) {
-            if (!GAMEBOARD.isCancelled && GAMEBOARD.currentPlayer === "O") {
+    
+            if (!GAMEBOARD.isCancelled && !GAMEBOARD.gameOver()) {
+               Player = "O";
                   GAMEBOARD.secondPlayerMove(row, col);
                   updateDom(target);
+                  Player = "X";
 
                   if (!GAMEBOARD.gameOver()) {
                      GAMEBOARD.firstPlayerMove();
                   }
             }
-         }
+         
       }
+
 
       // Check if mainContainer exists before adding event listener
       if (mainContainer) {
@@ -40,6 +44,8 @@
          cellFunction // Expose cellFunction for external use
       };
    })();
+  
+
 
    const GAMEBOARD = (function() {
       const gameBoard = [["d", "d", "d"],
@@ -93,7 +99,7 @@
       function secondPlayerMove(row, col) {
          if (isValidMove(row, col)) {
             gameBoard[row][col] = player2;
-            currentPlayer = player1; // Switch to player 1 (computer) after move
+            currentPlayer = "X"; // Switch to player 1 (computer) after move
             console.log("Second player moved");
 
             if (checkWinner()) {
@@ -118,7 +124,7 @@
          } while (!isValidMove(chooseRow, chooseCol));
 
          gameBoard[chooseRow][chooseCol] = player1;
-         currentPlayer = player2; // Switch to player 2 after move
+         currentPlayer = "O"; // Switch to player 2 after move
          console.log("First player moved");
 
          // Update the corresponding cell in the DOM
