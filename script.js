@@ -9,6 +9,7 @@
 
       function updateDom(target) {
          if (!target) return; // Ensure target element exists
+         
 
          // Update the DOM based on the game state
          const imgSrc = Player === "X" ? "./img/close.svg" : "./img/circle.svg";
@@ -50,6 +51,8 @@
             const playerParagaph = document.querySelector(".player");
             playerParagaph.textContent = '';
             playerParagaph.style.color = 'black';
+
+            GAMEBOARD.startGame();
          }
       }
 
@@ -81,6 +84,16 @@
       let isCancelled = false;
 
       let playerParagaph = document.querySelector(".player");
+
+      // function init() {
+      //    gameBoard = [["d", "d", "d"],
+      //                ["d", "d", "d"],
+      //                ["d", "d", "d"]];
+      //    isCancelled = false;
+      //    currentPlayer = player1;
+      //    DomElements.updateDom("init");
+         
+      // }
 
       function startGame() {
          // console.log("Game Started");
@@ -206,7 +219,7 @@
          resetGame
       };
    })();
-   const startGameButton = document.querySelector(".start");
+   // const startGameButton = document.querySelector(".start");
    document.addEventListener("DOMContentLoaded", GAMEBOARD.startGame);
-   startGameButton.addEventListener('click', GAMEBOARD.startGame);
+   // startGameButton.addEventListener('click', GAMEBOARD.startGame);
 
