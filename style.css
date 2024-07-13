@@ -80,3 +80,46 @@ body {
    border: none;
    border-radius: .5rem;
 }
+
+.modal {
+   margin: 5rem auto;
+   background-color: #fff;
+   text-align: center;
+   row-gap: 2rem;
+   padding: 2rem;
+   border-radius: 2rem;
+   border: 2px solid #36A5FF;
+   width: min(500px, 50%);
+}
+
+.modal p {
+   color: #36A5FF;
+   font-size: 2.5rem;
+   font-style: oblique;
+   font-weight: 600;
+}
+
+.modal img {
+   width: 10rem;
+   height: 10rem;
+}
+
+.modal::backdrop {
+   background-color: rgba(2, 20, 34, 0.7);
+}
+
+#closeDialog {
+   padding: 1rem 1.5rem;
+   background-color: #36A5FF;
+   color: #fff;
+   cursor: pointer;
+   border: none;
+   outline: none;
+   border-radius: 2rem;
+}
+
+#closeDialog:hover {
+   background-color: #fff;
+   color: #36A5FF;
+   border: 2px solid #36A5FF;
+}
